@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Shopping Cart</title>
+    <style>
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-item {
+            flex: 1;
+            max-width: 30%;
+            margin: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .remove-button {
+            display: block;
+            margin-top: 10px;
+            background-color: #dc3545;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .remove-button:hover {
+            background-color: #c82333;
+        }
+
+        .my_cart-button {
+            display: block;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .buy-now-button:hover {
+            background-color: #0056b3;
+        }
+
+        .total {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Shopping Cart</h1>
+
+    <ul class="product-list">
+        {% for item in cart_items %}
+        <li class="product-item">
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="100">
+            <h2>{{ item.product.name }}</h2>
+            <p>Price: ₹{{ item.product.price }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+
+            <form method="post" action="{% url 'newapp:remove_from_cart' item.id %}">
+                {% csrf_token %}
+                <button type="submit" class="remove-button">Remove</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div class="total">
+        Total: ₹{{ total_price }}
+    </div>
+
+    <a href="{% url 'newapp:view_cart' %}" class="my_cart-button">My Cart</a>
+
+</body>
+</html>

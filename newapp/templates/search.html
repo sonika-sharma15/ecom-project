@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+</head>
+<body>
+    <style>
+    /* Style the "Buy Now" button */
+        .buy-now-button {
+            display: block;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
+
+    <ul>
+        {% if results %}
+            {% for product in results %}
+                <h2>{{ product.name }}</h2>
+                <li>{{ product.description }}</li>
+                <li> Price :{{ product.price }}</li>
+                <li><img src="{{product.image.url}}" alt="" width="310px" height="270px">
+                <a href="{% url 'newapp:add_to_cart' product.id %}" class="buy-now-button">Add to Cart</a>
+              
+                <form method="post" action="{% url 'newapp:add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Quantity</button>
+                </form>
+            </li>
+                
+            {% endfor %}
+        {% else %}
+            <li>No results found</li>
+        {% endif %}
+    </ul>
+    
+</body>
+</html>

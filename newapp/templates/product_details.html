@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }} - Product Detail</title>
+</head>
+<body>
+    <style>
+        .product-item {
+            flex: 1; /* Grow to fill available space evenly */
+            max-width: 30%; /* Limit item width to avoid overcrowding */
+            margin: 10px; /* Add spacing between items */
+            border: 1px solid #ccc; /* Add a border for visual separation */
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Style the "Buy Now" button */
+        .buy-now-button {
+            display: block;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    
+    </style>
+    <ul class="product-list">
+        <li class="product-item">
+            <img src="{{ prod_detail.image.url }}" alt="{{ prod_detail.name }}" width="100">
+            <h2>{{ prod_detail.name }}</h2>
+            <p>{{ prod_detail.description }}</p>
+            <p>Price: ₹{{ prod_detail.price }}</p>
+
+            <!-- Add to Cart Button -->
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'newapp:add_to_cart' prod_detail.id %}">
+                    {% csrf_token %}
+                    <input type="number" name="quantity" value="1" min="1" required>
+                    <button type="submit" class="buy-now-button">Add to Cart</button>
+                </form>
+            {% else %}
+                <a href="{% url 'customer_login' %}" class="buy-now-button">Login to Add to Cart</a>
+            {% endif %}
+        </li>
+    </ul>
+
+</body>
+</html>   
